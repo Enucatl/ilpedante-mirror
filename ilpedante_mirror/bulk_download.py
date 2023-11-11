@@ -34,7 +34,7 @@ def parse_link(row: pd.Series) -> pd.DataFrame:
     Returns:
     - pd.DataFrame: A DataFrame with post metadata.
     """
-    post_previews = row["soup"].find_all("article", class_="articoli-item")
+    post_previews = row["soup"].find_all("article", class_="articoli-item")  # type: ignore
 
     posts = [
         {
@@ -60,7 +60,7 @@ def parse_post(row: pd.Series) -> pd.Series:
     Returns:
     - pd.Series: The input row with additional 'post' and 'post_markdown' columns.
     """
-    article = row["soup"].find("div", itemprop="articleBody")
+    article = row["soup"].find("div", itemprop="articleBody")  # type: ignore
     row["post"] = article.prettify()
     row["post_markdown"] = markdownify(row["post"])
     return row
