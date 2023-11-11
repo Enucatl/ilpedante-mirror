@@ -1,0 +1,37 @@
+[project]
+name = "ilpedante_mirror"
+authors = [
+{ name = "Enucatl", email = "1423701+Enucatl@users.noreply.github.com" },
+]
+license = { text = "CC-BY-SA" }
+readme = "README.md"
+requires-python = ">= 3.9"
+dependencies = [
+  "click",
+  "pandas",
+  "tqdm",
+  "beautifulsoup4",
+  "requests",
+  "markdownify",
+]
+dynamic = ["version"]
+
+[build-system]
+requires = [
+    "setuptools >= 63",
+    "wheel",
+    "setuptools-git-versioning",
+]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pytest",
+]
+
+[tools.setuptools-git-versioning]
+enabled = true
+
+[project.scripts]
+bulk_download = "ilpedante_mirror.bulk_download:main"
