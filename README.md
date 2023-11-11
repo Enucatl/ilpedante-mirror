@@ -2,8 +2,7 @@
 mirror of [ilpedante.info](http://ilpedante.info)
 
 ```
-pyenv virtualenv 3.10.7 ilpedante-mirror
-echo "ilpedante-mirror" > .python-version
-pip install -e .
-python ilpedante_mirror/bulk_download.py
+python -m venv .venv
+.venv/bin/python -m pip install -e .[dev]
+.venv/bin/bulk_download
 ```
