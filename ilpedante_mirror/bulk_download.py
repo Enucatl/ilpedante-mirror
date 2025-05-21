@@ -10,10 +10,12 @@ python ilpedante_mirror/bulk_download.py [root_url]
 - root_url (optional): The root URL of the blog. Default is "http://ilpedante.info/home/loadArticoli".
 """
 
-import locale
 from typing import Generator
+import locale
+import sys
 
 from bs4 import BeautifulSoup
+from loguru import logger
 from markdownify import markdownify
 from tqdm import tqdm
 import click
@@ -35,7 +37,7 @@ def parse_link(row: pd.Series) -> pd.DataFrame:
     - pd.DataFrame: A DataFrame with post metadata.
     """
     post_previews = row["soup"].find_all("article", class_="articoli-item")  # type: ignore
-
+    logger.debug(f"{post_previews=}")
     posts = [
         {
             "url": post_preview.find("h1", class_="titolo").a.get("href"),
@@ -91,31 +93,67 @@ def page_generator(root_url: str) -> Generator[BeautifulSoup, None, None]:
     - BeautifulSoup: The parsed HTML content of each page.
     """
     page = 1
-    while page_content := requests.get(page_url(root_url, page)).content:
-        soup = BeautifulSoup(page_content, features="html.parser")
-        page += 1
-        yield soup
+    while True:
+        try:
+            current_url = page_url(root_url, page)
+            request = requests.get(current_url)
+            request.raise_for_status()
+            page_content = request.content
+            if not page_content:
+                break
+            soup = BeautifulSoup(page_content, features="html.parser")
+            logger.debug(f"{soup=}")
+            number_of_tags = len(soup.find_all(True))
+            logger.debug(f"{number_of_tags=}")
+            if number_of_tags == 1:
+                break
+            page += 1
+            yield soup
+        except requests.exceptions.RequestException as e:
+            logger.error(f"request failed for {current_url=}: {e}")
+            break
 
 
 @click.command()
 @click.argument("root_url", default="http://ilpedante.info/home/loadArticoli")
-def main(root_url: str) -> None:
+@click.option(
+    "--log-level",
+    default="INFO",
+    type=click.Choice(
+        ["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"],
+        case_sensitive=False,
+    ),
+    show_default=True,
+)
+def main(root_url: str, log_level: str) -> None:
     """
     Main function to scrape and save blog post data.
 
     Parameters:
     - root_url (str): The root URL of the blog.
     """
+
+    logger.remove()
+    logger.add(
+        sys.stderr,
+        level=log_level.upper(),
+        format="{time:YYYY-MM-DD HH:mm} | <level>{level: <8}</level> | <cyan>{message}</cyan>",
+        colorize=True,
+    )
     soups = [soup for soup in page_generator(root_url)]
     df = pd.DataFrame({"soup": soups})
+    logger.debug(f"{df=}")
     df = df.apply(parse_link, axis=1)
     df = pd.concat(df.tolist())
+    logger.debug(f"{df=}")
     # get all articles from the collected links
     tqdm.pandas(desc="requests.get")
     df["html"] = df["url"].progress_apply(lambda x: requests.get(x).content)
     df["soup"] = df["html"].apply(BeautifulSoup, features="html.parser")
+    logger.debug(f"{df=}")
     tqdm.pandas(desc="parse_post")
     df = df.progress_apply(parse_post, axis=1)
+    logger.debug(f"{df=}")
     df.to_csv("_posts/posts.csv.gz", index=False)
 
 
