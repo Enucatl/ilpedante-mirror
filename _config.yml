@@ -1,2 +1,24 @@
+title: Il Pedante — archivio
+description: Archivio storico degli articoli pubblicati su ilpedante.info
+lang: it-IT
+locale: it_IT
+timezone: Europe/Rome
+url: https://enucatl.github.io
+baseurl: /ilpedante-mirror
 theme: minima
-title: ilpedante.info
+author: Il Pedante
+permalink: /post/:title/
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+exclude:
+  - ilpedante_mirror
+  - tests
+  - pyproject.toml
+  - uv.lock
+  - README.md
+  - _posts/posts.csv.gz
+  - recovered_source

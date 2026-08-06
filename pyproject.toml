@@ -25,6 +25,9 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.packages.find]
+include = ["ilpedante_mirror*"]
+
 [project.optional-dependencies]
 dev = [
     "ruff",
@@ -39,3 +42,4 @@ select = ["ALL"]
 
 [project.scripts]
 bulk_download = "ilpedante_mirror.bulk_download:main"
+build_archive = "ilpedante_mirror.archive:main"
