@@ -52,13 +52,18 @@ def test_internal_links_use_repository_base_path() -> None:
 
 
 def test_media_rewriting_and_missing_embed_note() -> None:
-    source = "![presente](/files/p.png)\n![assente](http://ilpedante.info/files/a.png)"
+    source = (
+        "![presente](/files/p.png)\n"
+        "![assente](http://ilpedante.info/files/a.png)\n"
+        "[documento](http://ilpedante.info/files/a.pdf)"
+    )
 
     result = rewrite_media(source, {"/files/p.png"})
 
     assert "![presente]({{ site.baseurl }}/files/p.png)" in result
     assert "Nota d'archivio" in result
     assert "http://ilpedante.info/files/a.png" in result
+    assert "media non recuperato; URL originale" in result
 
 
 def test_generate_omits_empty_post(tmp_path: Path) -> None:

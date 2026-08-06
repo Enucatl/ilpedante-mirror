@@ -11,7 +11,7 @@ Questo articolo è apparso in versione leggermente ridotta e riadattata su La Ve
 Nella mattinata di mercoledì 6 giugno ho avuto il piacere di partecipare ai lavori del convegno
 [Propaganda in the EU](https://www.youtube.com/watch?v=nPpN2xAbMLg)
 organizzato da Marco Zanni nelle sale del Parlamento Europeo a Bruxelles, dove ho presentato il personaggio e i lavori de Il Pedante (
-[qui](http://ilpedante.info/files/other/Il_Pedante_Bruxelles_06062018.pdf)
+[qui](http://ilpedante.info/files/other/Il_Pedante_Bruxelles_06062018.pdf) *(media non recuperato; URL originale)*
 le slide). Nel corso dell'evento è stato denunciato con forza il fenomeno della «lotta alle fake news» con cui si mira, anche nel nostro Paese (leggasi l'inquietante
 [DDL Gambaro, n. 2688](http://www.senato.it/service/PDF/PDFServer/BGT/01006504.pdf)
 ), a limitare la libertà di espressione sulla rete internet adducendo la «falsità» e l'«odio» di alcuni suoi contenuti. A modesta integrazione di quanto è già stato detto in quella sede, mi piace sviluppare qui una riflessione pedante sul tema.

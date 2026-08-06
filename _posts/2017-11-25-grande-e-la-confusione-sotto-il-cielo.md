@@ -34,7 +34,7 @@ esposte o implicate. Da quelle contraddizioni emerge lampante l'impasse di chi h
 
 > **Nota d'archivio:** media non recuperato: [URL originale](http://ilpedante.info/files/post_images/trmb_1511636949.jpg)
 
-](http://ilpedante.info/files/post_images/trmb_1511636949.jpg)
+ *(media non recuperato; URL originale)*](http://ilpedante.info/files/post_images/trmb_1511636949.jpg)
 
 In sintesi:
 

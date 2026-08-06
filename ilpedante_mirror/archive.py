@@ -95,6 +95,21 @@ def rewrite_internal_links(markdown: str) -> str:
 def rewrite_media(markdown: str, available: set[str]) -> str:
     """Point recovered media at Pages and annotate unavailable media embeds."""
 
+    def replace_missing_link(match: re.Match[str]) -> str:
+        label, original = match.group("label"), match.group("url")
+        path = local_media_path(original)
+        if path is None or path in available:
+            return match.group(0)
+        original_url = urljoin("https://ilpedante.info/post/archive", original)
+        return f"[{label}]({original_url}) *(media non recuperato; URL originale)*"
+
+    markdown = re.sub(
+        r"(?<!!)\[(?P<label>[^]]+)\]\((?P<url>(?:(?:https?:)?//(?:www\.)?"
+        r"ilpedante\.info)?(?:\.\.)?/(?:files|assets)/[^)]+)\)",
+        replace_missing_link,
+        markdown,
+    )
+
     def replace_image(match: re.Match[str]) -> str:
         label, original = match.group("label"), match.group("url")
         path = local_media_path(original)

@@ -26,7 +26,7 @@ con Pier Paolo Dal Monte, ho scritto e dimostrato che il nuovo obbligo
 
 > **Nota d'archivio:** media non recuperato: [URL originale](http://ilpedante.info/files/post_images/trmb_1580494000.png)
 
-](https://www.studioanticorpali.it/)
+ *(media non recuperato; URL originale)*](https://www.studioanticorpali.it/)
 
 Tutto ciò premesso, mi è parsa massimamente degna di diffusione un'iniziativa segnalatami dal presidente dell'
 [associazione Comilva](https://www.comilva.org/)

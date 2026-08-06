@@ -10,7 +10,7 @@ permalink: "/post/esclusioni-scolastiche-e-vaccinazioni-uno-pseudopaper/"
 
 > **Nota d'archivio:** media non recuperato: [URL originale](http://ilpedante.info/files/post_images/trmb_1570124789.jpg)
 
-](http://ilpedante.info/files/other/esclusioni-scolastiche-e-vaccinazioni.pdf)
+ *(media non recuperato; URL originale)*](http://ilpedante.info/files/other/esclusioni-scolastiche-e-vaccinazioni.pdf)
 In collaborazione con gli amici del
 [Comitato “Libertà di scelta”](https://www.ionondimentico.it/)
 ho cercato di quantificare nello pseudopaper sotto allegato gli effetti del decreto Lorenzin sul diritto all'istruzione pre-primaria dei bambini da zero a cinque anni (età a inizio anno scolastico). La stima ha prodotto un risultato di
@@ -39,5 +39,5 @@ A due anni dal varo del decreto Lorenzin e all'indomani della sua entrata a pien
 
 Ma non ve la caverete, non ce la caveremo così. La storia insegna che quando mancano buoni argomenti - come è questo il caso - movimenti di resistenza così numerosi si possono sconfiggere solo con la repressione e le purghe. Proprio per evitare esiti così drastici e già invocati da troppe persone offro alla riflessione di tutti, lettori e decisori, la nostra analisi.
 
-[Clicca qui](http://ilpedante.info/files/other/esclusioni-scolastiche-e-vaccinazioni.pdf)
+[Clicca qui](http://ilpedante.info/files/other/esclusioni-scolastiche-e-vaccinazioni.pdf) *(media non recuperato; URL originale)*
 per scaricare lo pseudopaper.
