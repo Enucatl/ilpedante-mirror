@@ -23,7 +23,13 @@ uv run bulk_download https://ilpedante.info/home/loadArticoli
 uv run build_archive
 ```
 
-`bulk_download` riscrive l'intero snapshot CSV; `build_archive` aggiorna i file
+Per gli aggiornamenti periodici, `bulk_download --incremental` riusa il
+contenuto già presente e scarica solo gli articoli nuovi. Continua comunque a
+leggere l'elenco completo, ma l'archivio è append-only: gli articoli assenti
+dall'elenco vengono conservati. Se il sito non risponde o restituisce un
+elenco vuoto, l'acquisizione fallisce senza sovrascrivere lo snapshot. Senza
+`--incremental`, vengono riscaricati gli articoli presenti, mantenendo comunque
+quelli già archiviati ma assenti dal sito. `build_archive` aggiorna i file
 Markdown pubblicati.
 
 ## Pubblicazione

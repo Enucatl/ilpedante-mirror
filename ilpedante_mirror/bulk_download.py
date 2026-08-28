@@ -11,6 +11,7 @@ python ilpedante_mirror/bulk_download.py [root_url]
 """
 
 import sys
+from pathlib import Path
 from typing import Generator
 
 from bs4 import BeautifulSoup
@@ -92,7 +93,7 @@ def page_generator(root_url: str) -> Generator[BeautifulSoup, None, None]:
     while True:
         try:
             current_url = page_url(root_url, page)
-            request = requests.get(current_url)
+            request = requests.get(current_url, timeout=30)
             request.raise_for_status()
             page_content = request.content
             if not page_content:
@@ -106,8 +107,58 @@ def page_generator(root_url: str) -> Generator[BeautifulSoup, None, None]:
             page += 1
             yield soup
         except requests.exceptions.RequestException as e:
-            logger.error(f"request failed for {current_url=}: {e}")
-            break
+            raise click.ClickException(f"request failed for {current_url}: {e}") from e
+
+
+def download_posts(df: pd.DataFrame) -> pd.DataFrame:
+    """Download and convert the article pages listed in a DataFrame."""
+
+    def fetch(url: str) -> bytes:
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        return response.content
+
+    tqdm.pandas(desc="requests.get")
+    df = df.copy()
+    df["html"] = df["url"].progress_apply(fetch)
+    df["soup"] = df["html"].apply(BeautifulSoup, features="html.parser")
+    logger.debug(f"{df=}")
+    tqdm.pandas(desc="parse_post")
+    return df.progress_apply(parse_post, axis=1)
+
+
+def merge_with_snapshot(
+    links: pd.DataFrame, snapshot: Path, incremental: bool
+) -> pd.DataFrame:
+    """Reuse stored article pages when incremental downloading is enabled."""
+    if not snapshot.exists():
+        return download_posts(links)
+
+    previous = pd.read_csv(snapshot, compression="gzip", keep_default_na=False)
+    content_columns = ["html", "soup", "post", "post_markdown"]
+    existing_content = previous[["url", *content_columns]]
+    if incremental:
+        current = links.merge(existing_content, on="url", how="left")
+        new_posts = current[current["post_markdown"].isna()][links.columns]
+        if new_posts.empty:
+            logger.info("No new articles; reusing the existing article content.")
+            downloaded = current
+        else:
+            downloaded = download_posts(new_posts).set_index("url")
+            current = current.set_index("url")
+            current.loc[downloaded.index, content_columns] = downloaded[content_columns]
+            downloaded = current.reset_index()
+    else:
+        downloaded = download_posts(links)
+
+    missing = previous[~previous["url"].isin(links["url"])]
+    if not missing.empty:
+        logger.warning(
+            "Retaining {} archived articles missing from the live listing.",
+            len(missing),
+        )
+        downloaded = pd.concat([downloaded, missing], ignore_index=True)
+    return downloaded
 
 
 @click.command()
@@ -121,7 +172,12 @@ def page_generator(root_url: str) -> Generator[BeautifulSoup, None, None]:
     ),
     show_default=True,
 )
-def main(root_url: str, log_level: str) -> None:
+@click.option(
+    "--incremental/--full",
+    default=False,
+    help="Reuse article content from the existing snapshot when possible.",
+)
+def main(root_url: str, log_level: str, incremental: bool) -> None:
     """
     Main function to scrape and save blog post data.
 
@@ -137,18 +193,16 @@ def main(root_url: str, log_level: str) -> None:
         colorize=True,
     )
     soups = [soup for soup in page_generator(root_url)]
+    if not soups:
+        raise click.ClickException("the live site returned no archive pages")
     df = pd.DataFrame({"soup": soups})
     logger.debug(f"{df=}")
     df = df.apply(parse_link, axis=1)
     df = pd.concat(df.tolist())
+    if df.empty:
+        raise click.ClickException("the live site returned no articles")
     logger.debug(f"{df=}")
-    # get all articles from the collected links
-    tqdm.pandas(desc="requests.get")
-    df["html"] = df["url"].progress_apply(lambda x: requests.get(x).content)
-    df["soup"] = df["html"].apply(BeautifulSoup, features="html.parser")
-    logger.debug(f"{df=}")
-    tqdm.pandas(desc="parse_post")
-    df = df.progress_apply(parse_post, axis=1)
+    df = merge_with_snapshot(df, Path("_posts/posts.csv.gz"), incremental)
     logger.debug(f"{df=}")
     df.to_csv("_posts/posts.csv.gz", index=False)
 
