@@ -6,7 +6,7 @@ date: "2024-09-05 18:50:48"
 permalink: "/post/sigismondo-o-le-case/"
 ---
 
-Ai tempi in cui mi interessavo di cose socialiste, l'ideologo che più di tutti mi intrigò era un personaggio scaturito dalla fantasia di
+Ai tempi in cui mi interessavo di cose socialiste, l'ideologo che più di tutti mi intrigò fu un personaggio scaturito dalla fantasia di
 **Émile Zola**
 :
 **Sigismondo Busch**

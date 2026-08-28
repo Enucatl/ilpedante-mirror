@@ -527,7 +527,11 @@ compensabile dall’interesse. Lo spunto fu sviluppato da altri
 teologi
 [[30]](#fn:30)
 e sarebbe sfociato più tardi nella distinzione cattolica tra
-«capitale» e «capitalismo» formalizzata da Toniolo, Sturzo e
+«capitale» e «capitalismo» formalizzata da
+**Toniolo**
+,
+**Sturzo**
+e
 altri, sostanzialmente su basi morali.
 [[31]](#fn:31)
 

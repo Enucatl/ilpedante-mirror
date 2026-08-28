@@ -10,9 +10,8 @@ python ilpedante_mirror/bulk_download.py [root_url]
 - root_url (optional): The root URL of the blog. Default is "http://ilpedante.info/home/loadArticoli".
 """
 
-from typing import Generator
-import locale
 import sys
+from typing import Generator
 
 from bs4 import BeautifulSoup
 from loguru import logger
@@ -21,9 +20,6 @@ from tqdm import tqdm
 import click
 import pandas as pd
 import requests
-
-
-locale.setlocale(locale.LC_ALL, "it_IT.UTF-8")
 
 
 def parse_link(row: pd.Series) -> pd.DataFrame:

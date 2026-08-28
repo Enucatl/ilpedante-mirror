@@ -115,6 +115,8 @@ in Libia. Ma la signora è donna, si dice democratica e comsopolita e dispensa c
 [sostenerla](http://www.corriere.it/opinioni/16_marzo_08/perche-noi-conviene-hillary-clinton-ad168ebc-e498-11e5-9e78-e03cf324c1ba.shtml)
 .
 
+&lt;br&gt;
+
 Il caso - e i moltissimi ascrivibili allo stesso paradigma - rivela un aspetto centrale della psicologia dei moderati, cioè l'inclinazione ad anteporre nella gerarchia dei pensieri le
 *conseguenze immaginabili dei fatti*
 ai fatti stessi. Ciò preoccupa perché integra una forma di

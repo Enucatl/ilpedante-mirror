@@ -3,7 +3,7 @@
 Archivio statico di [ilpedante.info](http://ilpedante.info), pubblicato con
 Jekyll e GitHub Pages.
 
-I 142 file Markdown e i media disponibili sono versionati: la pubblicazione
+I file Markdown e i media disponibili sono versionati: la pubblicazione
 non dipende dal sito originale né dagli strumenti Python. Per rigenerare i post
 in modo deterministico dallo snapshot CSV:
 
@@ -16,9 +16,16 @@ Le due acquisizioni aggiuntive del 2025 e la cattura del post satirico sulle
 sardine sono conservate in `recovered_source/`; il comando le reimporta senza
 dipendere dalla rete.
 
-`_posts/posts.csv.gz` è lo snapshot originale. Il vecchio comando
-`bulk_download` resta disponibile solo per documentare il processo con cui lo
-snapshot fu creato.
+`_posts/posts.csv.gz` è lo snapshot aggiornato del sito. Per acquisire gli
+articoli disponibili dal sito e rigenerare l'archivio:
+
+```
+uv run bulk_download https://ilpedante.info/home/loadArticoli
+uv run build_archive
+```
+
+`bulk_download` riscrive l'intero snapshot CSV; `build_archive` aggiorna i file
+Markdown pubblicati.
 
 ## Pubblicazione
 

@@ -36,3 +36,5 @@ La lotta al contante è insomma un
 di rara nitidezza per cogliere le involuzioni, innanzitutto culturali, del sentimento politico contemporaneo.
 [Denaro Libero](http://denarolibero.org/)
 intende fornirne una cronaca commentata concentrandosi su una declinazione del trasferimento dei poteri in alto che, se realizzata, renderebbe irreversibile la cessione della sovranità di tutti, e su tutto, ai signori dei soldi.
+
+&lt;br&gt;
