@@ -12,9 +12,8 @@ uv sync --extra dev
 uv run build_archive
 ```
 
-Le due acquisizioni aggiuntive del 2025 e la cattura del post satirico sulle
-sardine sono conservate in `recovered_source/`; il comando le reimporta senza
-dipendere dalla rete.
+Gli articoli vengono letti dallo snapshot live; il comando aggiorna l'intero
+archivio a ogni acquisizione.
 
 `_posts/posts.csv.gz` è lo snapshot aggiornato del sito. Per acquisire gli
 articoli disponibili dal sito e rigenerare l'archivio:

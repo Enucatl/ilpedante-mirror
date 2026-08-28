@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from ilpedante_mirror.archive import (
-    EMPTY_POST_SLUG,
     Post,
     front_matter,
     generate,
@@ -18,7 +17,7 @@ def test_snapshot_has_one_empty_post() -> None:
 
     assert posts
     assert [(post.slug, post.title) for post in posts if not post.markdown.strip()] == [
-        (EMPTY_POST_SLUG, 'Che cosa penso delle "sardine"')
+        ("che-cosa-penso-delle-sardine", 'Che cosa penso delle "sardine"')
     ]
 
 
@@ -66,34 +65,10 @@ def test_media_rewriting_and_missing_embed_note() -> None:
     assert "media non recuperato; URL originale" in result
 
 
-def test_generate_omits_empty_post(tmp_path: Path) -> None:
+def test_generate_includes_empty_post_from_snapshot(tmp_path: Path) -> None:
     generated = generate(SOURCE, tmp_path / "posts", tmp_path)
 
     assert generated
-    assert not any(EMPTY_POST_SLUG in path.name for path in generated)
-
-
-def test_recovered_posts_are_added_from_local_manifest(tmp_path: Path) -> None:
-    recovered = tmp_path / "recovered.json"
-    recovered.write_text(
-        '[{"slug":"nuovo","title":"Nuovo","author":"Il Pedante",'
-        '"date":"2025-06-10 09:15:22","markdown":"Test"}]',
-        encoding="utf-8",
-    )
-
-    generated = generate(SOURCE, tmp_path / "posts", tmp_path, recovered)
-
-    assert (tmp_path / "posts/2025-06-10-nuovo.md").exists()
-
-
-def test_checked_in_recovery_manifest_generates_recovered_posts(tmp_path: Path) -> None:
-    generated = generate(
-        SOURCE,
-        tmp_path / "posts",
-        tmp_path,
-        Path("recovered_source/recovered_posts.json"),
-    )
-
     assert any(
         path.name == "2019-12-11-che-cosa-penso-delle-sardine.md" for path in generated
     )

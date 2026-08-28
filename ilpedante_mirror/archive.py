@@ -13,7 +13,6 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
-EMPTY_POST_SLUG = "che-cosa-penso-delle-sardine"
 INTERNAL_POST_RE = re.compile(
     r"(?:(?:https?:)?//(?:www\.)?ilpedante\.info/+(?:ilpedante/)?post/|"
     r"(?<![A-Za-z0-9./])/(?:ilpedante/)?post/)"
@@ -41,7 +40,7 @@ def slug_from_url(url: str) -> str:
     return urlparse(url).path.rstrip("/").rsplit("/", maxsplit=1)[-1]
 
 
-def read_posts(source: Path, recovered_source: Path | None = None) -> list[Post]:
+def read_posts(source: Path) -> list[Post]:
     """Read posts from the compressed, original CSV export."""
     csv.field_size_limit(sys.maxsize)
     with gzip.open(source, mode="rt", encoding="utf-8", newline="") as stream:
@@ -56,18 +55,6 @@ def read_posts(source: Path, recovered_source: Path | None = None) -> list[Post]
             )
             for row in rows
         ]
-    if recovered_source and recovered_source.exists():
-        recovered = json.loads(recovered_source.read_text(encoding="utf-8"))
-        posts.extend(
-            Post(
-                slug=row["slug"],
-                title=row["title"],
-                author=row["author"],
-                date=datetime.fromisoformat(row["date"]),
-                markdown=row["markdown"],
-            )
-            for row in recovered
-        )
     return posts
 
 
@@ -159,7 +146,6 @@ def generate(
     source: Path,
     output: Path,
     site_root: Path,
-    recovered_source: Path | None = None,
 ) -> list[Path]:
     """Regenerate all Markdown posts, returning their paths."""
     media_directories = (site_root / "assets", site_root / "files")
@@ -175,13 +161,16 @@ def generate(
         old_post.unlink()
 
     generated = []
-    for post in read_posts(source, recovered_source):
-        if post.slug == EMPTY_POST_SLUG and not post.markdown.strip():
-            continue
+    for post in read_posts(source):
         body = rewrite_internal_links(post.markdown)
-        body = rewrite_media(body, available).strip() + "\n"
+        body = rewrite_media(body, available).strip()
         destination = output / f"{post.date:%Y-%m-%d}-{post.slug}.md"
-        destination.write_text(front_matter(post) + body, encoding="utf-8")
+        content = (
+            front_matter(post) + body + "\n"
+            if body
+            else front_matter(post).rstrip() + "\n"
+        )
+        destination.write_text(content, encoding="utf-8")
         generated.append(destination)
     return generated
 
@@ -192,15 +181,8 @@ def main() -> None:
     parser.add_argument("--source", type=Path, default=Path("_posts/posts.csv.gz"))
     parser.add_argument("--output", type=Path, default=Path("_posts"))
     parser.add_argument("--site-root", type=Path, default=Path("."))
-    parser.add_argument(
-        "--recovered-source",
-        type=Path,
-        default=Path("recovered_source/recovered_posts.json"),
-    )
     args = parser.parse_args()
-    generated = generate(
-        args.source, args.output, args.site_root, args.recovered_source
-    )
+    generated = generate(args.source, args.output, args.site_root)
     print(f"Generated {len(generated)} posts")
 
 
